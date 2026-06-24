@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Espelho</title>
+  <style>
+    body {
+      background: #0a0a0a;
+      color: #00ff88;
+      font: 18px 'Courier New', monospace;
+      padding: 30px;
+      white-space: pre-wrap;
+    }
+    .status {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="status" id="status">🟡 Aguardando primeiro texto...</div>
+  <div id="conteudo"></div>
+
+  <script>
+    const REPO = 'SEU_USUARIO/olho-espelho';  // ← troque aqui
+    const ARQUIVO = 'texto_atual.json';
+    const URL_RAW = `https://raw.githubusercontent.com/${REPO}/main/${ARQUIVO}`;
+
+    async function atualizarTexto() {
+      try {
+        const resp = await fetch(URL_RAW + '?t=' + Date.now()); // evita cache
+        if (!resp.ok) throw new Error('Arquivo não encontrado');
+        const data = await resp.json();
+        document.getElementById('conteudo').textContent = data.texto;
+        document.getElementById('status').textContent = '🟢 Última atualização: ' + new Date(data.timestamp).toLocaleTimeString();
+      } catch (e) {
+        document.getElementById('status').textContent = '🔴 Erro ou aguardando envio...';
+      }
+    }
+
+    atualizarTexto();
+    setInterval(atualizarTexto, 3000); // verifica a cada 3 segundos
+  </script>
+</body>
+</html>
