@@ -2,7 +2,8 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <title>Espelho</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espelho - gasahog356-ux/beto-ola</title>
   <style>
     body {
       background: #0a0a0a;
@@ -23,9 +24,11 @@
   <div id="conteudo"></div>
 
   <script>
-    const REPO = 'SEU_USUARIO/olho-espelho';  // ← troque aqui
+    // Configuração correta para o seu repositório
+    const REPO = 'gasahog356-ux/beto-ola';
     const ARQUIVO = 'texto_atual.json';
-    const URL_RAW = `https://raw.githubusercontent.com/${REPO}/main/${ARQUIVO}`;
+    const BRANCH = 'main';  // mesmo branch usado no script Python
+    const URL_RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${ARQUIVO}`;
 
     async function atualizarTexto() {
       try {
@@ -33,7 +36,8 @@
         if (!resp.ok) throw new Error('Arquivo não encontrado');
         const data = await resp.json();
         document.getElementById('conteudo').textContent = data.texto;
-        document.getElementById('status').textContent = '🟢 Última atualização: ' + new Date(data.timestamp).toLocaleTimeString();
+        document.getElementById('status').textContent = 
+          '🟢 Última atualização: ' + new Date(data.timestamp).toLocaleTimeString();
       } catch (e) {
         document.getElementById('status').textContent = '🔴 Erro ou aguardando envio...';
       }
